@@ -1,7 +1,7 @@
 class Event < ApplicationRecord
   STATUS = ["draft", "public", "private"]
   validates_inclusion_of :status, :in => STATUS
-  
+
   validates_presence_of :name, :friendly_id
 
   validates_uniqueness_of :friendly_id
@@ -18,5 +18,9 @@ class Event < ApplicationRecord
   def generate_friendly_id
     self.friendly_id ||= SecureRandom.uuid
   end
+
+
+  belongs_to :category, :optional => true
+
 
 end
