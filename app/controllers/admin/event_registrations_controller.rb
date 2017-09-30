@@ -19,6 +19,10 @@ class Admin::EventRegistrationsController < ApplicationController
        if Array(params[:ticket_ids]).any?
          @registrations = @registrations.by_ticket(params[:ticket_ids])
        end
+       
+       if params[:registration_id].present?
+         @registrations = @registrations.where( :id => params[:registration_id].split(",") )
+       end
 
   end
 
