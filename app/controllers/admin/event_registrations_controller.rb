@@ -2,7 +2,9 @@ class Admin::EventRegistrationsController < ApplicationController
   before_action :find_event
 
   def index
-    @registrations = @event.registrations.includes(:ticket).order("id DESC").page(params[:page]).per(10)
+    @q = @event.registrations.ransack(params[:q])
+
+    @registrations = @q.result.includes(:ticket).order("id DESC").page(params[:page])
 
        if params[:start_on].present?
          @registrations = @registrations.where( "created_at >= ?", Date.parse(params[:start_on]).beginning_of_day )
@@ -19,7 +21,7 @@ class Admin::EventRegistrationsController < ApplicationController
        if Array(params[:ticket_ids]).any?
          @registrations = @registrations.by_ticket(params[:ticket_ids])
        end
-       
+
        if params[:registration_id].present?
          @registrations = @registrations.where( :id => params[:registration_id].split(",") )
        end
