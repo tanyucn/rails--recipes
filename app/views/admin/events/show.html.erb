@@ -4,4 +4,10 @@
   <%= link_to "打開前台", event_path(@event), :target => "_blank", :class => "btn btn-primary" %>
 </p>
 
+  <ul>
+  <% @event.attachments.each do |a| %>
+    <li><%= link_to a.description, a.attachment.url %></li>
+  <% end %>
+  </ul>
+
 <%= sanitize @event.description %>
